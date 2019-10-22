@@ -136,7 +136,9 @@ export class PoChartCircular extends PoChartDynamicTypeComponent implements OnDe
 
     this.setTooltipAttributes(svgText, serie);
 
-    svgG.appendChild(svgText);
+    if (value !== 0) {
+      svgG.appendChild(svgText);
+    }
     this.renderer.appendChild(this.svgElement, svgG);
     this.svgTextElementsList.push(svgText);
   }
@@ -158,8 +160,14 @@ export class PoChartCircular extends PoChartDynamicTypeComponent implements OnDe
 
     this.svgContainer.nativeElement.appendChild(this.svgElement);
 
-    this.createPaths();
-    this.createTexts();
+    const checkSeriesValue = this.series.some(serie => {
+      return serie.value !== 0;
+    });
+
+    if (checkSeriesValue) {
+      this.createPaths();
+      this.createTexts();
+    }
   }
 
   private drawPath(path, chartItemStartAngle, chartItemEndAngle) {
