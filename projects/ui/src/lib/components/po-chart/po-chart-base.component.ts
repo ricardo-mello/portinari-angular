@@ -2,6 +2,7 @@ import { EventEmitter, Input, Output } from '@angular/core';
 
 import { convertToInt, isTypeof } from '../../utils/util';
 
+import { PoChartGaugeSerie } from './po-chart-types/po-chart-gauge/po-chart-gauge-series.interface';
 import { PoChartType } from './enums/po-chart-type.enum';
 import { PoDonutChartSeries } from './po-chart-types/po-chart-donut/po-chart-donut-series.interface';
 import { PoPieChartSeries } from './po-chart-types/po-chart-pie/po-chart-pie-series.interface';
@@ -33,6 +34,7 @@ const poChartTypeDefault = PoChartType.Pie;
 export abstract class PoChartBaseComponent {
 
   private _height?: number = poChartDefaultHeight;
+  private _series: Array<PoDonutChartSeries | PoPieChartSeries | PoChartGaugeSerie>;
   private _type: PoChartType = poChartTypeDefault;
 
   public readonly poChartType = PoChartType;
@@ -76,7 +78,19 @@ export abstract class PoChartBaseComponent {
    * - `PoDonutChartSeries`
    * - `PoPieChartSeries`
    */
-  @Input('p-series') series: Array<PoDonutChartSeries | PoPieChartSeries>;
+  @Input('p-series') set series(value: Array<PoDonutChartSeries | PoPieChartSeries | PoChartGaugeSerie>) {
+    this._series = value;
+
+    if (!Array.isArray(value)) {
+      this._series = [value];
+    }
+  }
+
+  get series() {
+    return this._series;
+  }
+
+
 
   /** Define o título do gráfico. */
   @Input('p-title') title?: string;

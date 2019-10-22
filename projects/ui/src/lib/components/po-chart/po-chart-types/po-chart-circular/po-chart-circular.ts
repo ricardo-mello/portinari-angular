@@ -88,7 +88,13 @@ export class PoChartCircular extends PoChartDynamicTypeComponent implements OnDe
     this.calculateTotalValue();
     this.calculateAngleRadians();
     this.createSVGElements();
-    this.animationSetup();
+
+    if (PoChartType.Gauge) {
+      const retorno = this.drawGaugePath(this.svgPathElementsList[0]);
+    } else {
+      this.animationSetup();
+    }
+
   }
 
   private checkingIfScrollsWithPoPage() {
@@ -99,7 +105,6 @@ export class PoChartCircular extends PoChartDynamicTypeComponent implements OnDe
 
   private createPath(index: number, serie: PoCircularChartSeries, svgPathsWrapper: any) {
     const svgPath = this.renderer.createElement('svg:path', 'svg');
-
     this.renderer.setAttribute(svgPath, 'class', 'po-path-item');
     this.renderer.setAttribute(svgPath, 'fill', this.colors[index]);
 
@@ -160,6 +165,52 @@ export class PoChartCircular extends PoChartDynamicTypeComponent implements OnDe
 
     this.createPaths();
     this.createTexts();
+  }
+
+  private drawGaugePath(path) {
+    // const sinAlpha = Math.sin(0);
+    // const cosAlpha = Math.cos(0);
+    
+    // const startX = this.centerX + cosAlpha * this.centerX;
+    // const startY = this.centerX + sinAlpha * this.centerX;
+    
+    // const endY = this.centerX * 2;
+    
+    const raio = this.svgHeight / (Math.PI * 2);
+    const diametro = raio * 2;
+    
+    // const startX = this.centerX - raio;
+    // const startY = diametro;
+    
+    const sinAlpha = Math.sin(this.centerX);
+    const cosAlpha = Math.cos(this.centerX);
+    
+    const startX = this.centerX + cosAlpha * this.centerX;
+    const startY = this.centerX + sinAlpha * this.centerX;
+    
+    const sinBeta = Math.sin(this.centerX * 2);
+    const cosBeta = Math.cos(this.centerX * 2);
+    
+    const endX = this.centerX + cosBeta * this.centerX;
+    const endY = this.centerX + sinBeta * this.centerX;
+    
+    console.log('this.centerX + raio', this.centerX + raio);
+    console.log('this.centerX + raio', this.centerX - raio);
+
+    const pathCoordinates = [
+      'M', 0, this.chartWrapper,
+      'A', 1, 1, 0, 0, 1, this.chartWrapper * 2, this.chartWrapper,
+      ].join(' ');
+
+
+      // d="M 0 1700 A 1 1 0 0 1 3000 1700"
+
+    // const pathCoordinates = [
+    //   'M', startX, this.svgHeight,
+    //   'a', this.centerX, this.centerX, 0, 0, 1, endX, endY,
+    //   ].join(' ');
+
+    return path.setAttribute('d', pathCoordinates);
   }
 
   private drawPath(path, chartItemStartAngle, chartItemEndAngle) {

@@ -45,8 +45,7 @@ export abstract class PoChartDynamicTypeComponent {
   }
 
   calculateTotalValue() {
-    this.totalValue = this.series.reduce(
-      (previousValue, serie) => previousValue + serie.value, 0);
+    this.totalValue = this.series.reduce((previousValue, serie) => previousValue + serie.value, 0);
   }
 
 }

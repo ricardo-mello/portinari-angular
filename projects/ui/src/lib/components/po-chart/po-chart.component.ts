@@ -7,6 +7,7 @@ import { PoChartBaseComponent } from './po-chart-base.component';
 import { PoChartColors } from './po-chart-colors.constant';
 import { PoChartDonutComponent } from './po-chart-types/po-chart-donut/po-chart-donut.component';
 import { PoChartDynamicTypeComponent } from './po-chart-types/po-chart-dynamic-type.component';
+import { PoChartGaugeComponent } from './po-chart-types/po-chart-gauge/po-chart-gauge.component';
 import { PoChartPieComponent } from './po-chart-types/po-chart-pie/po-chart-pie.component';
 import { PoChartType } from './enums/po-chart-type.enum';
 
@@ -43,8 +44,9 @@ export class PoChartComponent extends PoChartBaseComponent implements AfterViewI
   private windowResizeListener: Subject<any> = new Subject();
 
   private mappings = {
-    [PoChartType.Pie]: PoChartPieComponent,
-    [PoChartType.Donut]: PoChartDonutComponent
+    [PoChartType.Donut]: PoChartDonutComponent,
+    [PoChartType.Gauge]: PoChartGaugeComponent,
+    [PoChartType.Pie]: PoChartPieComponent
   };
 
   colors: Array<string>;
